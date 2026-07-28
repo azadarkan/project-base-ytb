@@ -1,14 +1,18 @@
-// Express kütüphanesinden router modülünü alıyoruz
 var express = require('express');
-// Router modülünü kullanarak bir router nesnesi oluşturuyoruz
 var router = express.Router();
 
-/* GET home page. */
-// GET metodu ile '/' adresine bir istek geldiğinde çalışacak fonksiyon
-router.get('/', function(req, res, next) {
-  // EJS template motorunu kullanarak 'index' template'ini render ediyoruz
-  // 'title' değişkenini 'Express' olarak template'e gönderiyoruz
-  res.render('index', { title: 'Azad' });
-});
+const fs = require("fs")
+
+let routes = fs.readdirSync("./routes")
+
+// dinamik routing yapısı
+for (let route of routes) {
+  if (route.includes(".js") && route != "index.js") { // route string'tir
+    router.use ("/" + route.replace(".js", ""), require('./' + route))
+    // direkt router.use ("/" + route) bunu yazsaydık: /users/users.js, /auditlogs/auditlogs.js vb yollar oluşurdu
+    // direkt router.use ("/" + route.replace(".js", "")) bunu yazsaydık: /users, /auditlogs vb yollar oluşurdu
+    // router.use ("/" + route.replace(".js", ""), require("./" + route))bunu yazarak sadece /users, /auditlogs vb yollar oluşmasını sağladık
+  } 
+}
 
 module.exports = router;
