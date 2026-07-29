@@ -35,6 +35,7 @@ app.use('/auditlogs', require('./routes/auditlogs')); // http://localhost:3000/a
 app.use('/categories', require('./routes/categories')); // http://localhost:3000/auditlogs */
 
 // catch 404 and forward to error handler
+// Varsayılan 404 middleware'i: Normalde biz app.use() ile route'larımızı ekliyoruz. Eğer yukarıda tanımlanan hiçbir route gelen request'in URL'ine eşleşmezse, bir sonraki middleware'e geçmek yerine direkt buraya düşer. Yani http://localhost:3000/abc gibi bir URL'e request atarsak direkt buraya düşer ve 404 döndürür.
 app.use(function(req, res, next) {
   next(createError(404));
 });
